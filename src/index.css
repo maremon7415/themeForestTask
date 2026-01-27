@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Forum&family=Goldman:wght@400;700&family=Kaushan+Script&family=Manrope:wght@300;400;500;600&display=swap');
+
+@import "tailwindcss";
+
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  font-family: 'Forum', serif;
+  font-weight: 400;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
