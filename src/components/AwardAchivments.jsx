@@ -1,4 +1,8 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const AwardAchivments = () => {
     const stats = [
@@ -31,16 +35,54 @@ const AwardAchivments = () => {
         }
     ];
 
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            const items = document.querySelectorAll('.stat-item');
+
+            items.forEach((item) => {
+                const numberEl = item.querySelector('.stat-number');
+                const originalText = numberEl.getAttribute('data-target');
+                const match = originalText.match(/^([\d.]+)(.*)$/);
+
+                if (match) {
+                    const targetValue = parseFloat(match[1]);
+                    const suffix = match[2];
+                    const proxy = { val: 0 };
+
+                    gsap.to(proxy, {
+                        val: targetValue,
+                        duration: 2,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: containerRef.current,
+                            start: "top 85%",
+                        },
+                        onUpdate: () => {
+                            numberEl.innerText = Math.floor(proxy.val) + suffix;
+                        }
+                    });
+                }
+            });
+        }, containerRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <section className='w-full max-w-[1920px] mx-auto px-[100px] bg-white flex gap-0'>
+        <section ref={containerRef} className='w-full max-w-[1920px] mx-auto px-[100px] bg-white flex gap-0'>
 
             {/* Left Column: Stats (20%) */}
             <div className='w-[20%] flex flex-col justify-center gap-14 border-r border-gray-100 pr-10'>
                 {stats.map((stat, index) => (
-                    <div key={index} className='flex flex-col'>
+                    <div key={index} className='flex flex-col stat-item'>
                         <div className="flex items-baseline gap-2">
-                            <h2 className="text-[50px] font-['Forum'] text-[#1A1A1A] leading-none">
-                                {stat.number}
+                            <h2
+                                className="stat-number text-[50px] font-['Forum'] text-[#1A1A1A] leading-none"
+                                data-target={stat.number}
+                            >
+                                0{stat.number.replace(/[\d.]/g, '')}
                             </h2>
                             <span className="text-[18px] text-[#BE7D60] font-['Forum']">
                                 {stat.suffix}
