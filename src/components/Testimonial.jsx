@@ -1,6 +1,13 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Testimonial = () => {
+    const sectionRef = useRef(null);
+    const contentRef = useRef(null);
+
     const reviews = [
         {
             id: 1,
@@ -17,7 +24,7 @@ const Testimonial = () => {
             role: "Real Estate Developer",
             location: "London, UK",
             text:
-                "Navigating complex property laws is never easy, but this team made it look effortless. Their attention to detail saved us months of potential delays. Truly exceptional service. Professionalism at its finest. They defended our intellectual property rights         d.",
+                "Navigating complex property laws is never easy, but this team made it look effortless. Their attention to detail saved us months of potential delays. Truly exceptional service. Professionalism at its finest.",
             avatar: "https://i.pravatar.cc/150?u=2",
         },
         {
@@ -56,8 +63,58 @@ const Testimonial = () => {
         [activeId, reviews]
     );
 
+    // Initial Section Reveal
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            gsap.from(sectionRef.current, {
+                y: 100,
+                opacity: 0,
+                duration: 1.2,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top 80%",
+                }
+            });
+
+            // Animate decorative svg
+            gsap.from(".deco-svg", {
+                rotation: 360,
+                opacity: 0,
+                duration: 20,
+                repeat: -1,
+                ease: "linear"
+            });
+
+            // Animate stars
+            gsap.from(".star-icon", {
+                scale: 0,
+                opacity: 0,
+                stagger: 0.1,
+                duration: 0.8,
+                ease: "back.out(1.7)",
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top 70%",
+                }
+            });
+
+        }, sectionRef);
+        return () => ctx.revert();
+    }, []);
+
+    // Animate Content on Change
+    useEffect(() => {
+        if (!contentRef.current) return;
+
+        gsap.fromTo(contentRef.current,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+        );
+    }, [activeId]);
+
     return (
-        <section className="relative w-full max-w-[1920px] mx-auto px-[100px] py-[140px] bg-[#041C2C] text-center overflow-hidden mt-25">
+        <section ref={sectionRef} className="relative w-full max-w-[1920px] mx-auto px-[100px] py-[140px] bg-[#041C2C] text-center overflow-hidden mt-25">
 
             {/* Decorative background quote */}
             <div className="absolute bottom-[150px] right-[200px] pointer-events-none select-none">
@@ -67,7 +124,7 @@ const Testimonial = () => {
                     viewBox="0 0 150 150"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="opacity-[0.08]"
+                    className="deco-svg opacity-[0.08]"
                 >
                     <path
                         d="M60 40C45 55 38 72 38 95C38 118 50 130 70 130C90 130 102 118 102 98C102 78 92 66 72 66C70 66 68 66 66 67C69 58 74 51 82 43L60 40Z"
@@ -93,6 +150,7 @@ const Testimonial = () => {
                         height="24"
                         viewBox="0 0 24 24"
                         fill="#BE7D60"
+                        className="star-icon"
                     >
                         <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
                     </svg>
@@ -100,7 +158,7 @@ const Testimonial = () => {
             </div>
 
             {/* Testimonial text */}
-            <div className="max-w-[960px] mx-auto min-h-[280px] flex flex-col items-center justify-center">
+            <div ref={contentRef} className="max-w-[960px] mx-auto min-h-[280px] flex flex-col items-center justify-center">
                 <p className="text-[28px] leading-[42px] font-['Forum'] text-white font-light mb-14">
                     “{activeReview.text}”
                 </p>

@@ -83,7 +83,7 @@ const CaseStudy = () => {
             {/* Left Column: Sticky Title */}
             {/* We remove vertical padding from parent and manage it here or via triggers to ensure correct pinning height */}
             <div className="case-study-left w-[20%] h-dvh flex flex-col justify-start pt-[120px] pl-[100px] border-r border-gray-100">
-                <h2 ref={titleRef} className="text-[48px] font-['Forum'] font-medium text-[#1A1A1A] leading-none whitespace-nowrap mt-25">
+                <h2 ref={titleRef} className="text-[48px] font-['Forum'] font-medium text-[#1A1A1A] leading-none whitespace-nowrap ">
                     Case Study
                 </h2>
             </div>

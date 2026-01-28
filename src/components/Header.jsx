@@ -1,8 +1,25 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
 
 const Header = () => {
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(headerRef.current.children, {
+        y: -20,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.1,
+        ease: "power3.out"
+      });
+    }, headerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <header className="w-full max-w-[1920px] h-[136px] mx-auto px-[50px] 2xl:px-[100px] font-light text-[#1A1A1A]">
+    <header ref={headerRef} className="w-full max-w-[1920px] h-[136px] mx-auto px-[50px] 2xl:px-[100px] font-light text-[#1A1A1A]">
       {/* Top bar */}
       <div className="w-full h-[54px] flex justify-between items-center border-b border-[#F8F2EF]">
         <ul className="flex gap-6 text-[16px]">

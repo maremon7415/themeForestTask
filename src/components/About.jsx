@@ -1,7 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
     const [activeIndex, setActiveIndex] = useState(0);
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top 75%",
+                }
+            });
+
+            // Animate Images
+            tl.from(".about-img", {
+                scale: 0.8,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power3.out"
+            });
+
+            // Animate Heading
+            tl.from(".about-heading", {
+                y: 30,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            }, "-=0.5");
+
+            // Animate Timeline Container
+            tl.from(".timeline-container", {
+                x: 50,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            }, "-=0.8");
+
+        }, containerRef);
+
+        return () => ctx.revert();
+    }, []);
 
     const timelineData = [
         {
@@ -30,18 +74,18 @@ const About = () => {
     };
 
     return (
-        <div className='w-full max-w-[1920px] mx-auto min-h-screen bg-white pt-[100px] px-[100px] grid grid-cols-[0.9fr_1.1fr] gap-[60px]'>
+        <div ref={containerRef} className='w-full max-w-[1920px] mx-auto min-h-screen bg-white pt-[100px] px-[100px] grid grid-cols-[0.9fr_1.1fr] gap-[60px]'>
 
             {/* Left Box (Images) */}
             <div className="w-full h-full relative flex flex-col justify-center items-center gap-[60px]">
-                <div className="w-full h-[45%] overflow-hidden">
+                <div className="about-img w-full h-[45%] overflow-hidden">
                     <img
                         src="/about1.png"
                         alt="Law firm history"
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out"
                     />
                 </div>
-                <div className="w-full h-[45%] overflow-hidden">
+                <div className="about-img w-full h-[45%] overflow-hidden">
                     <img
                         src="/about2.png"
                         alt="Legal team"
@@ -55,13 +99,13 @@ const About = () => {
 
                 {/* Top 20% - Heading */}
                 <div className="w-full max-w-[90%] h-[20%] flex items-start">
-                    <h2 className="text-[48px] leading-[1.1] font-['Forum'] text-[#1A1A1A]">
+                    <h2 className="about-heading text-[48px] leading-[1.1] font-['Forum'] text-[#1A1A1A]">
                         Serving clients in every area of law since 1971 with experience and dedication.
                     </h2>
                 </div>
 
                 {/* Bottom 80% - Content + Controls */}
-                <div className="w-full h-[80%] flex border-t border-gray-100 pt-12">
+                <div className="timeline-container w-full h-[80%] flex border-t border-gray-100 pt-12">
 
                     {/* Timeline Content List */}
                     <div className="flex flex-col w-full gap-12 pr-10">

@@ -1,15 +1,52 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top 80%",
+                }
+            });
+
+            // Animate Info Blocks
+            tl.from(".contact-info-block", {
+                x: -50,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power3.out"
+            });
+
+            // Animate Form
+            tl.from(".contact-form", {
+                x: 50,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            }, "-=0.8");
+
+        }, containerRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <section className='w-full max-w-[1920px] mx-auto py-[120px] px-[100px] bg-white'>
+        <section ref={containerRef} className='w-full max-w-[1920px] mx-auto py-[120px] px-[100px] bg-white'>
             <div className="w-full flex shadow-sm">
 
                 {/* Left Information Column (30%) */}
                 <div className="w-[30%] flex flex-col gap-14 pr-10 pt-10">
 
                     {/* Location */}
-                    <div className='flex gap-6'>
+                    <div className='contact-info-block flex gap-6'>
                         <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center border border-[#BE7D60]/30 rounded-full">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#BE7D60" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -31,7 +68,7 @@ const Contact = () => {
                     </div>
 
                     {/* Email */}
-                    <div className='flex gap-6'>
+                    <div className='contact-info-block flex gap-6'>
                         <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center border border-[#BE7D60]/30 rounded-full">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#BE7D60" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
@@ -47,7 +84,7 @@ const Contact = () => {
                     </div>
 
                     {/* Phone */}
-                    <div className='flex gap-6'>
+                    <div className='contact-info-block flex gap-6'>
                         <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center border border-[#BE7D60]/30 rounded-full">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#BE7D60" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
@@ -63,7 +100,7 @@ const Contact = () => {
                 </div>
 
                 {/* Right Form Column (70%) */}
-                <form className="w-[70%] bg-[#F9F2F0] pl-[80px] p-[60px] flex flex-col border-l border-[#BE7D60]">
+                <form className="contact-form w-[70%] bg-[#F9F2F0] pl-[80px] p-[60px] flex flex-col border-l border-[#BE7D60]">
                     <h4 className="text-[40px] font-['Forum'] text-[#1A1A1A] leading-[1.1] mb-12 uppercase">
                         Fill out the Form <br />
                         <span className="text-[#BE7D60]">we will get in touch</span>

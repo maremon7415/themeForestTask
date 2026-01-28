@@ -1,12 +1,57 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const JoinCta = () => {
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top 75%",
+                }
+            });
+
+            // Animate Left Column
+            tl.from(".cta-left", {
+                x: -50,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            });
+
+            // Animate Center Content
+            tl.from(".cta-center", {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            }, "-=0.5");
+
+            // Animate Right Column
+            tl.from(".cta-right-img", {
+                x: 50,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power3.out"
+            }, "-=0.8");
+
+        }, containerRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <div className='w-full max-w-[1920px] mx-auto py-[100px] px-[100px] bg-white'>
+        <div ref={containerRef} className='w-full max-w-[1920px] mx-auto py-[100px] px-[100px] bg-white'>
             <div className='w-full grid grid-cols-3 items-center'>
 
                 {/* Left Column - Image 1 */}
-                <div className='w-full h-[300px] flex items-end justify-start pl-10'>
+                <div className='cta-left w-full h-[300px] flex items-end justify-start pl-10'>
                     <div className="w-[160px] h-[160px] border-8 border-white shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
                         <img
                             className='w-full h-full object-cover'
@@ -17,7 +62,7 @@ const JoinCta = () => {
                 </div>
 
                 {/* Center Column - Content */}
-                <div className='w-full flex flex-col items-center justify-center text-center -mt-10'>
+                <div className='cta-center w-full flex flex-col items-center justify-center text-center -mt-10'>
                     <h4 className="text-[70px] leading-none font-['Forum'] text-[#1A1A1A] mb-6 whitespace-nowrap">
                         Become Our Intern
                     </h4>
@@ -35,7 +80,7 @@ const JoinCta = () => {
                 {/* Right Column - Images 2 & 3 */}
                 <div className='w-full h-[400px] flex flex-col justify-between items-end pr-10'>
                     {/* Top Image */}
-                    <div className="w-[140px] h-[140px] mr-[80px] border-8 border-white shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
+                    <div className="cta-right-img w-[140px] h-[140px] mr-[80px] border-8 border-white shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
                         <img
                             className='w-full h-full object-cover'
                             src="/joincta2.png"
@@ -43,7 +88,7 @@ const JoinCta = () => {
                         />
                     </div>
                     {/* Bottom Image */}
-                    <div className="w-[180px] h-[180px] border-8 border-white shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
+                    <div className="cta-right-img w-[180px] h-[180px] border-8 border-white shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
                         <img
                             className='w-full h-full object-cover'
                             src="/joincta3.jpg"

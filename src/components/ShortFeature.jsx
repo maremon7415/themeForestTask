@@ -1,4 +1,8 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ArrowButton = ({ text }) => {
     return (
@@ -20,11 +24,54 @@ const ArrowButton = ({ text }) => {
 }
 
 const ShortFeature = () => {
+    const containerRef = useRef(null);
+    const counterRef = useRef(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            // Animate Columns Slide Up
+            gsap.from(".feature-col", {
+                y: 100,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top 85%",
+                }
+            });
+
+            // Animate Counter
+            const counterElement = counterRef.current;
+            const targetValue = 960; // 960K
+            const proxy = { val: 0 };
+
+            gsap.to(proxy, {
+                val: targetValue,
+                duration: 2,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top 85%",
+                },
+                onUpdate: () => {
+                    if (counterElement) {
+                        counterElement.innerText = Math.floor(proxy.val) + "K";
+                    }
+                }
+            });
+
+        }, containerRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <div className="w-full max-w-[1920px] mx-auto h-[351px] px-[100px] py-[50px] grid grid-cols-[1.2fr_1fr_1fr] items-center bg-white border-b border-gray-100 font-['Forum']">
+        <div ref={containerRef} className="w-full max-w-[1920px] mx-auto h-[351px] px-[100px] py-[50px] grid grid-cols-[1.2fr_1fr_1fr] items-center bg-white border-b border-gray-100 font-['Forum']">
 
             {/* Column 1 */}
-            <div className="h-full flex flex-col justify-end pr-12 border-r border-[#F8F2EF]">
+            <div className="feature-col h-full flex flex-col justify-end pr-12 border-r border-[#F8F2EF]">
                 <h2 className="text-[48px] leading-[58px] text-[#1A1A1A] mb-6">
                     Drive impact through <br />
                     <span className="italic text-[#BE7D60]">
@@ -38,7 +85,7 @@ const ShortFeature = () => {
             </div>
 
             {/* Column 2 */}
-            <div className="h-full flex flex-col justify-end px-12 border-r border-[#F8F2EF]">
+            <div className="feature-col h-full flex flex-col justify-end px-12 border-r border-[#F8F2EF]">
                 <p className="text-[24px] leading-[30px] text-[#1A1A1A] mb-8">
                     Smart actionable tips for modern businesses
                 </p>
@@ -47,9 +94,9 @@ const ShortFeature = () => {
             </div>
 
             {/* Column 3 */}
-            <div className="h-full flex flex-col justify-end pl-12">
-                <p className="text-[70px] leading-none text-[#BE7D60] mb-2">
-                    960K
+            <div className="feature-col h-full flex flex-col justify-end pl-12">
+                <p className="text-[70px] leading-none text-[#BE7D60] mb-2 flex">
+                    <span ref={counterRef}>0K</span>
                     <sup className="text-[40px] align-top relative top-1">+</sup>
                 </p>
 

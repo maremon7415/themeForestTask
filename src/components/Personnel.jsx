@@ -1,6 +1,44 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Personnel = () => {
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            // Animate Team Members
+            gsap.from(".team-member", {
+                y: 100,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top 75%",
+                }
+            });
+
+            // Animate Bottom Section
+            gsap.from(".bottom-section", {
+                y: 100,
+                opacity: 0,
+                duration: 1.2,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ".bottom-section",
+                    start: "top 85%",
+                }
+            });
+
+        }, containerRef);
+
+        return () => ctx.revert();
+    }, []);
+
     const team = [
         {
             id: 1,
@@ -37,12 +75,12 @@ const Personnel = () => {
     ];
 
     return (
-        <section className="relative w-full max-w-[1920px] mx-auto pt-25 bg-[#041C2C] mb-50">
+        <section ref={containerRef} className="relative w-full max-w-[1920px] mx-auto pt-25 bg-[#041C2C] mb-50">
 
             {/* Team Grid */}
             <div className="w-full px-50 grid grid-cols-4 gap-8">
                 {team.map((member) => (
-                    <div key={member.id} className="flex flex-col group cursor-pointer">
+                    <div key={member.id} className="team-member flex flex-col group cursor-pointer">
                         <div className="w-full h-[300px] overflow-hidden relative">
                             <img
                                 src={member.image}
@@ -73,7 +111,7 @@ const Personnel = () => {
             </div>
 
             {/* Bottom Section - Image with Overlay Text */}
-            <div className="w-full pl-50 relative">
+            <div className="bottom-section w-full pl-50 relative">
                 <div className="relative w-full h-[600px] transform translate-y-25 z-10">
                     <img
                         src="/personnelBg.jpg"
