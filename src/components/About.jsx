@@ -17,7 +17,6 @@ const About = () => {
                 }
             });
 
-            // Animate Images
             tl.from(".about-img", {
                 scale: 0.8,
                 opacity: 0,
@@ -26,7 +25,6 @@ const About = () => {
                 ease: "power3.out"
             });
 
-            // Animate Heading
             tl.from(".about-heading", {
                 y: 30,
                 opacity: 0,
@@ -34,7 +32,6 @@ const About = () => {
                 ease: "power3.out"
             }, "-=0.5");
 
-            // Animate Timeline Container
             tl.from(".timeline-container", {
                 x: 50,
                 opacity: 0,

@@ -27,7 +27,6 @@ const Subscribe = () => {
 
     return (
         <section ref={containerRef} className="w-full max-w-[1920px] mx-auto py-[100px] px-[100px] bg-[#F9F2F0] flex items-center justify-between">
-            {/* Text Content */}
             <div className="subscribe-content flex flex-col gap-4 max-w-[50%]">
                 <h2 className="text-[48px] font-['Forum'] text-[#1A1A1A] leading-none">
                     Subscribe for Updates
@@ -37,7 +36,6 @@ const Subscribe = () => {
                 </p>
             </div>
 
-            {/* Form */}
             <div className="subscribe-content w-[40%]">
                 <form className="w-full flex border-b border-[#BE7D60] py-2 relative group">
                     <input

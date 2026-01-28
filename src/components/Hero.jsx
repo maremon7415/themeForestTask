@@ -90,15 +90,16 @@ const Hero = () => {
             {/* Hero Content */}
             <div className="w-full h-[760px] relative flex">
                 {/* Left Social Links */}
-                <div className="w-[100px] h-full flex items-center justify-center border-r border-gray-100 bg-white z-10">
-                    <div className="flex gap-8 text-[14px] font-bold tracking-[0.2em] -rotate-90 text-gray-400 whitespace-nowrap">
+                <div className="w-[100px] h-full flex items-center justify-center border-r border-gray-100 bg-white z-20 relative">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90 flex gap-10 whitespace-nowrap origin-center">
                         {['DRIBBBLE', 'BEHANCE', 'GITHUB', 'LINKEDIN', 'FACEBOOK'].map((link) => (
                             <a
                                 key={link}
                                 href="#"
-                                className="social-link hover:text-[#BE7D60] hover:tracking-[0.3em] transition-all duration-300 ease-out"
+                                className="social-link text-[12px] font-bold tracking-[0.2em] text-[#1A1A1A]/40 hover:text-[#BE7D60] transition-colors duration-300 relative group py-2"
                             >
                                 {link}
+                                <span className="absolute -bottom-2 left-0 w-full h-px bg-[#BE7D60] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                             </a>
                         ))}
                     </div>
@@ -106,7 +107,6 @@ const Hero = () => {
 
                 {/* Hero Image */}
                 <div className="flex-1 h-full relative overflow-hidden group">
-                    {/* Overlay removed or adjusted if needed, kept structure but added ref to image wrapper/img */}
                     <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-all duration-500 z-10" />
                     <img
                         ref={heroImageRef}
