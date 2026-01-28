@@ -39,15 +39,15 @@ const Contact = () => {
     }, []);
 
     return (
-        <section ref={containerRef} className='w-full max-w-[1920px] mx-auto py-[120px] px-[100px] bg-white'>
-            <div className="w-full flex shadow-sm">
+        <section ref={containerRef} className='w-full max-w-[1920px] mx-auto py-25 pl-25 bg-white'>
+            <div className="w-full flex ">
 
                 {/* Left Information Column (30%) */}
                 <div className="w-[30%] flex flex-col gap-14 pr-10 pt-10">
 
                     {/* Location */}
                     <div className='contact-info-block flex gap-6'>
-                        <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center border border-[#BE7D60]/30 rounded-full">
+                        <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-full">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#BE7D60" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                                 <circle cx="12" cy="10" r="3"></circle>

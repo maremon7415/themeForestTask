@@ -9,6 +9,9 @@ import CaseStudy from "../components/CaseStudy";
 import Personnel from "../components/Personnel";
 import AwardAchivments from "../components/AwardAchivments";
 import Contact from "../components/Contact";
+import News from "../components/News";
+import Subscribe from "../components/Subscribe";
+import Footer from "../components/Footer";
 
 const Home = () => {
   return (
@@ -24,6 +27,9 @@ const Home = () => {
       <Personnel />
       <AwardAchivments />
       <Contact />
+      <News />
+      <Subscribe />
+      <Footer />
     </main>
   );
 };
